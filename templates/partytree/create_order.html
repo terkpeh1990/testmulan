@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content%}
+ <div class="row">
+    <div class="col-md-5 col-sm-12">
+    <div class="content">
+        <div class="container-fluid">
+            <div class="card">
+                <h4 class='p-2 m-2'> Product List</h4>
+                <div class='p-3 m-3'>
+                    <table  id="example2" class="table  table-striped table-hover col-8 text-center" role="grid"
+                        aria-describedby="example2_info">
+                        <thead class="request-table-head">
+                            <tr role="row">
+                                <th scope="col">Code</th>
+                                <th scope="col">Product</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Action</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for r in list_inventory %}
+                            </tr>
+                            <tr role="row" class="odd">
+                                <td>{{ r.product_id.id}}</td>
+                                <td>{{ r.product_id.name}}</td>
+                                <td>{{ r.product_id.unit_price}}</td>
+                            
+                                
+                                <td>
+                                    <a class="btn btn-sm btn-warning"
+                                        href="{% url 'partytree:add_items_to_chart' r.id order.id %}">
+                                        Add
+                                   </a>
+                                   
+                                  
+                                </td>
+                            </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+                </div>
+
+                
+            </div>
+        </div>
+    </div>
+    </div>
+
+     <div class="col-md-7 col-sm-12">
+          <div class="content">
+              <div class="container-fluid">
+                  <div class="card card-primary card-outline">
+                        <div class="card-body p-3 m-3">
+                            <h4>ORDER ##{{order.id}}</h4>
+                            <table class="table table-striped table-sm" id="my_friends">
+                                <thead>
+                                    <tr>
+                                        <th>Item</th>
+                                        <th>Qty</th>
+                                        <th>Amount</th>
+                                        <th>Action</th>
+
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in detail %}
+                                    <tr>
+                                        <td>{{item.product.name}}</td>
+                                        
+                                        <td>{{item.quantity}} x {{item.product.unit_price}} </td>
+                                        <td>{{item.gross_price}}</td>
+                                        <td>
+                                        
+                                            <a class="text-primary far fa-check-circle fa-lg mr-2" href="{% url 'partytree:adjuest_quantity' item.id order.id %}"></a>
+                                            <a  class = "text-danger far fa-times-circle fa-lg ml-2" href="{% url 'partytree:delete_item' item.id %}"></a>
+                                        </td>
+
+                                    </tr>
+                                    {% endfor %}
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+
+                                    <tr>
+
+                                        <td></td>
+                                        <td></td>
+                                        <td><b>Sub Total</b></td>
+                                        <td><b>{{order.gross_price}}</b> </td>
+
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td><b>VAT 0%</b></td>
+                                        <td><b>0.00</b></td>
+
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td><b>Total (GH&#8373)</b></td>
+                                        <td><b>{{order.gross_price}}</b></td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        <div class="row">
+
+
+                               
+
+
+
+
+
+                            <div class="col ">
+                                <a class="btn btn-warning mt-2 ml-2" href="{% url 'partytree:checkout' order.id %}">Proceed To Check Out</a>
+                                <a class="btn btn-danger  mt-2 ml-2" href="{% url 'partytree:cancel_order' order.id %}">Cancel Order</a>
+
+                            </div>
+
+                        </div>
+
+                        </div>
+                  </div>
+              </div>
+          </div>
+     </div>
+     
+
+ </div>
+
+{% endblock %}
